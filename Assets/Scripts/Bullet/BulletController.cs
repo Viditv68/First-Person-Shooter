@@ -39,7 +39,7 @@ public class BulletController : MonoBehaviour
             other.transform.parent.GetComponent<EnemyHealthController>().DamageEnemy(damage * 2);
 
         if (other.gameObject.tag == "Player" && damagePlayer)
-            Debug.Log("hit player");
+            PlayerHealthController.instance.DamagePlayer(damage);
 
 
         Destroy(gameObject);

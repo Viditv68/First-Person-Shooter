@@ -129,7 +129,7 @@ MonoBehaviour:
   rb: {fileID: 1432607901793995959}
   impactEffect: {fileID: 4460096607471442946, guid: db732540bf466e9499471f03bbf94d45,
     type: 3}
-  damage: 1
+  damage: 10
   damageEnemy: 0
   damagePlayer: 1
 --- !u!96 &8585283185249468055

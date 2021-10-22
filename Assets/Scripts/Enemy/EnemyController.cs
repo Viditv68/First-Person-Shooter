@@ -88,32 +88,35 @@ public class EnemyController : MonoBehaviour
             }
             else
             {
-                shootTimeCounter -= Time.deltaTime;
-
-                if (shootTimeCounter > 0)
+                if (PlayerController.instance.gameObject.activeInHierarchy)
                 {
-                    fireCount -= Time.deltaTime;
-                    if (fireCount <= 0)
+                    shootTimeCounter -= Time.deltaTime;
+
+                    if (shootTimeCounter > 0)
                     {
-                        fireCount = fireRate;
-                        firePoint.LookAt(PlayerController.instance.transform.position);
-
-                        float angle = CheckAngleToPlayer();
-                        if (Mathf.Abs(angle) < 30)
+                        fireCount -= Time.deltaTime;
+                        if (fireCount <= 0)
                         {
-                            Instantiate(bullet, firePoint.position, firePoint.rotation);
-                            animator.SetTrigger("fireShot");
-                        }
-                           
-                        else
-                            shotWaitCounter = waitBetweenShots;
-                    }
-                    agent.destination = transform.position;
-                }
+                            fireCount = fireRate;
+                            firePoint.LookAt(PlayerController.instance.transform.position);
 
-                else
-                {
-                    shotWaitCounter = waitBetweenShots;
+                            float angle = CheckAngleToPlayer();
+                            if (Mathf.Abs(angle) < 30)
+                            {
+                                Instantiate(bullet, firePoint.position, firePoint.rotation);
+                                animator.SetTrigger("fireShot");
+                            }
+
+                            else
+                                shotWaitCounter = waitBetweenShots;
+                        }
+                        agent.destination = transform.position;
+                    }
+
+                    else
+                    {
+                        shotWaitCounter = waitBetweenShots;
+                    }
                 }
                 animator.SetBool("isMoving", false);
             }
