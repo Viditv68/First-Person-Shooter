@@ -12,9 +12,25 @@ public class UIController : MonoBehaviour
 
     public Text ammoText;
 
+    public Image damageEffect;
+    public float damageAlpha;
+    public float damageFadeSpeed;
     private void Awake()
     {
         instance = this;
+    }
+
+
+    private void Update()
+    {
+        if(damageEffect.color.a != 0)
+        {
+            damageEffect.color = new Color(damageEffect.color.r, damageEffect.color.g, damageEffect.color.b, Mathf.MoveTowards(damageEffect.color.a, 0f, damageFadeSpeed * Time.deltaTime));
+        }
+    }
+    public void ShowDamage()
+    {
+        damageEffect.color = new Color(damageEffect.color.r, damageEffect.color.g, damageEffect.color.b, damageAlpha);
     }
   
 }
