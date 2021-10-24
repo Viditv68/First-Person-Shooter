@@ -16,7 +16,7 @@ GameObject:
   - component: {fileID: 1432607901793995958}
   - component: {fileID: 8585283185249468055}
   m_Layer: 9
-  m_Name: Enemy Bullet
+  m_Name: SniperBullet
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -62,7 +62,7 @@ MeshRenderer:
   m_RenderingLayerMask: 1
   m_RendererPriority: 0
   m_Materials:
-  - {fileID: 2100000, guid: adec3145bf1a6c942a2c62617c374d67, type: 2}
+  - {fileID: 2100000, guid: 1658c436f50fb8740afe0580207d625b, type: 2}
   m_StaticBatchInfo:
     firstSubMesh: 0
     subMeshCount: 0
@@ -127,11 +127,11 @@ MonoBehaviour:
   moveSpeed: 15
   lifeTime: 5
   rb: {fileID: 1432607901793995959}
-  impactEffect: {fileID: 4460096607471442946, guid: 11184c78a5864f84ca81f62383622a93,
+  impactEffect: {fileID: 4460096607471442946, guid: 798c8b7f14e3e6b44917ed4a385eeabf,
     type: 3}
   damage: 10
-  damageEnemy: 0
-  damagePlayer: 1
+  damageEnemy: 1
+  damagePlayer: 0
 --- !u!96 &8585283185249468055
 TrailRenderer:
   serializedVersion: 2
@@ -151,7 +151,7 @@ TrailRenderer:
   m_RenderingLayerMask: 1
   m_RendererPriority: 0
   m_Materials:
-  - {fileID: 2100000, guid: adec3145bf1a6c942a2c62617c374d67, type: 2}
+  - {fileID: 2100000, guid: 1658c436f50fb8740afe0580207d625b, type: 2}
   m_StaticBatchInfo:
     firstSubMesh: 0
     subMeshCount: 0

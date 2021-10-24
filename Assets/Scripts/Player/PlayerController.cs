@@ -26,14 +26,30 @@ public class PlayerController : MonoBehaviour
 
     public Animator anim;
 
-    public GameObject bullet;
+    //public GameObject bullet;
     public Transform firePoint;
 
+    public Gun activeGun;
 
+    public List<Gun> allGuns = new List<Gun>();
+    public List<Gun> UnlockableGuns = new List<Gun>();
+    public int currentGun;
+
+    public Transform adsPoint;
+    public Transform gunHolder;
+    private Vector3 gunStartPos;
+    public float adsSpeed;
     private void Awake()
     {
         instance = this;
 
+    }
+
+    private void Start()
+    {
+        currentGun--;
+        SwitchGun();
+        gunStartPos = gunHolder.localPosition;
     }
     void Update()
     {
@@ -78,6 +94,30 @@ public class PlayerController : MonoBehaviour
         //Handle SHooting
         FireBullet();
 
+        if(Input.GetKeyDown(KeyCode.Tab))
+        {
+            SwitchGun();
+        }
+
+        if(Input.GetMouseButtonDown(1))
+        {
+            CameraController.instance.ZoomIn(activeGun.zoomAmount);
+        }
+        if(Input.GetMouseButton(1))
+        {
+            gunHolder.position = Vector3.MoveTowards(gunHolder.position, adsPoint.position, adsSpeed * Time.deltaTime);
+        }
+        else
+        {
+            gunHolder.localPosition = Vector3.MoveTowards(gunHolder.localPosition, gunStartPos, adsSpeed * Time.deltaTime);
+        }
+
+        if(Input.GetMouseButtonUp(1))
+        {
+            CameraController.instance.ZoomOut();
+        }
+
+
         anim.SetFloat("moveSpeed", moveInput.magnitude);
         anim.SetBool("onGround", canJump);
 
@@ -85,7 +125,8 @@ public class PlayerController : MonoBehaviour
 
     private void FireBullet()
     {
-        if (Input.GetMouseButtonDown(0))
+        //single shot
+        if (Input.GetMouseButtonDown(0) && activeGun.fireCounter <= 0)
         {
             RaycastHit hit;
             if(Physics.Raycast(camTransform.position, camTransform.forward, out hit, 50f))
@@ -98,10 +139,67 @@ public class PlayerController : MonoBehaviour
                 firePoint.LookAt(camTransform.position + (camTransform.forward * 30f));
             }
 
-            Instantiate(bullet, firePoint.position, firePoint.rotation);
+            //Instantiate(bullet, firePoint.position, firePoint.rotation);
+            FireShot();
+        }
+
+        //shot repeat
+        if(Input.GetMouseButton(0) && activeGun.canAutoFire)
+        {
+            if(activeGun.fireCounter <= 0)
+                FireShot();
         }
             
     }
+
+    public void FireShot()
+    {
+        if (activeGun.currentAmmo > 0)
+        {
+            activeGun.currentAmmo--;
+            Instantiate(activeGun.bullet, firePoint.position, firePoint.rotation);
+            activeGun.fireCounter = activeGun.fireRate;
+
+            UIController.instance.ammoText.text = "Ammo: " + activeGun.currentAmmo;
+        }
+    }
+    public void SwitchGun()
+    {
+        activeGun.gameObject.SetActive(false);
+        currentGun++;
+        if (currentGun >= allGuns.Count)
+            currentGun = 0;
+        activeGun = allGuns[currentGun];
+        activeGun.gameObject.SetActive(true);
+        UIController.instance.ammoText.text = "Ammo: " + activeGun.currentAmmo;
+        firePoint.position = activeGun.firePoint.position;
+    }
+
+    public void AddGun(string gunToAdd)
+    {
+        bool gunUnlocked = false;
+
+        if(UnlockableGuns.Count > 0)
+        {
+            for(int i = 0; i < UnlockableGuns.Count; i++)
+            {
+                if(UnlockableGuns[i].gunName == gunToAdd)
+                {
+                    gunUnlocked = true;
+                    allGuns.Add(UnlockableGuns[i]);
+                    UnlockableGuns.RemoveAt(i);
+                    i = UnlockableGuns.Count;
+                }
+            }
+        }
+
+        if(gunUnlocked)
+        {
+            currentGun = allGuns.Count - 2;
+            SwitchGun();
+        }
+    }
+
 
     private void Jump()
     {
@@ -120,4 +218,6 @@ public class PlayerController : MonoBehaviour
             canDoubleJump = false;
         }
     }
+
+
 }
