@@ -53,6 +53,8 @@ public class PlayerController : MonoBehaviour
     }
     void Update()
     {
+        if (UIController.instance.pauseScreen.activeInHierarchy)
+            return;
         //moveInput.x = Input.GetAxis("Horizontal") * moveSpeed * Time.deltaTime;
         //moveInput.z = Input.GetAxisRaw("Vertical") * moveSpeed * Time.deltaTime;
 
