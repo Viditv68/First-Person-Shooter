@@ -50,6 +50,7 @@ public class PlayerHealthController : MonoBehaviour
                 gameObject.SetActive(false);
                 currentHealth = 0;
                 GameManager.instance.PlayerDied();
+                AudioManager.instance.StopBackgroundMusic();
             }
 
             invincCounter = invincibleLength;
